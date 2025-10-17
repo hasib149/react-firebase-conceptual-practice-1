@@ -30,8 +30,22 @@ const SignUp = () => {
         toast.success("Sign Up successfull");
       })
       .catch((error) => {
-        console.log(error);
-        toast.error(error.message);
+        const errorCode = error.code;
+        const errorMessage = error.message;
+
+        if (errorCode === "auth/email-already-in-use") {
+          toast.error("❌ This email is already registered!");
+        } else if (errorCode === "auth/invalid-email") {
+          toast.error("📧 Invalid email format!");
+        } else if (errorCode === "auth/weak-password") {
+          toast.error("🔑 Password must be at least 6 characters long!");
+        } else if (errorCode === "auth/network-request-failed") {
+          toast.error(
+            "🌐 Network error. Please check your internet connection."
+          );
+        } else {
+          toast.error("⚠️ " + errorMessage); // fallback
+        }
       });
   };
   return (
